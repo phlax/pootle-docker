@@ -1,0 +1,33 @@
+# https://travis-ci.org/#!/translate/pootle
+dist: trusty
+sudo: true
+language: python
+services:
+  - docker
+
+cache:
+  directories:
+    - /var/lib/docker-cache
+    - $HOME/virtualenv/python2.7.14/bin
+    - $HOME/virtualenv/python2.7.14/lib
+    - $HOME/virtualenv/python2.7/bin
+
+install:
+  - if [[ -f /var/lib/docker-cache/images.tar ]]; then docker load -i /var/lib/docker-cache/images.tar; fi;
+  - docker images
+  - git clone https://github.com/phlax/pootle pootle_env
+  - cd pootle_env
+  - git checkout docker-dev
+  - pip install -r requirements/host.txt
+  - export LOCAL_USER_ID=$UID
+  - makey build-all
+  - makey run bash make travis-assets
+
+script:
+  - makey test-py-postgres
+
+before_cache:
+  - docker container prune -f
+  - docker image prune -f
+  - docker images
+  - docker save $(docker images -q) -o /var/lib/docker-cache/images.tar
