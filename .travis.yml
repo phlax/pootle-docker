@@ -32,3 +32,4 @@ before_cache:
   - docker images
   - sudo mkdir -p /var/lib/docker-cache
   - sudo docker save $(docker images -q) -o /var/lib/docker-cache/images.tar
+  - sudo ls -lh /var/lib/docker-cache
