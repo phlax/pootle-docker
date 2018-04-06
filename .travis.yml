@@ -15,6 +15,7 @@ cache:
 jobs:
   include:
     - stage: Build test env
+       script:
        - if [[ -f /var/lib/docker-cache/base.tar ]]; then sudo docker load -i /var/lib/docker-cache/base.tar; fi;
        - docker images
        - whoami
@@ -26,6 +27,7 @@ jobs:
        - makey build-all
        - makey run bash make travis-assets
     - stage: test
+      script:
       - # makey test-py-postgres
       - echo 'success!'
 
