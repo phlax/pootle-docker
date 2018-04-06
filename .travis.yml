@@ -25,6 +25,9 @@ jobs:
       - export LOCAL_USER_ID=$UID
       - makey build-all
       - makey run bash make travis-assets
+    - stage: build docker image
+      script:
+      - docker images
 
 before_cache:
   - docker images
