@@ -34,5 +34,6 @@ before_cache:
   - docker images
   - sudo mkdir -p /var/lib/docker-cache
   - sudo docker save $(docker images -q) -o /var/lib/docker-cache/images.tar
-  - sudo ls -lh /var/lib/docker-cache
   - sudo chown -R travis:travis /var/lib/docker-cache
+  - sudo chmod 777 -R /var/lib/docker-cache
+  - sudo ls -lh /var/lib/docker-cache
