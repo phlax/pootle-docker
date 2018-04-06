@@ -26,14 +26,10 @@ jobs:
       - export LOCAL_USER_ID=$UID
       - makey build-all
       - makey run bash make travis-assets
-      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      - docker push $DOCKER_USERNAME/pootle:base
+      - docker images
+      - mkdir -p $HOME/docker-cache
+      - docker save translate/pootle:base -o $HOME/docker-cache/base.tar
     - stage: Run sqlite tests
       script:
+      - docker load -i $HOME/docker-cache/base.tar; fi;
       - docker images
-
-before_cache:
-  - docker images
-  - mkdir -p $HOME/docker-cache
-  - docker save translate/pootle:base -o $HOME/docker-cache/base.tar
-  - ls -lh $HOME/docker-cache
