@@ -7,33 +7,29 @@ services:
 
 cache:
   directories:
-    - /var/lib/docker-cache
+    - docker-cache
     - $HOME/virtualenv/python2.7.14/bin
     - $HOME/virtualenv/python2.7.14/lib
     - $HOME/virtualenv/python2.7/bin
 
-install:
-  - if [[ -f /var/lib/docker-cache/images.tar ]]; then sudo docker load -i /var/lib/docker-cache/images.tar; fi;
-  - docker images
-  - whoami
-  - git clone https://github.com/phlax/pootle pootle_env
-  - cd pootle_env
-  - git checkout docker-dev
-  - pip install -r requirements/host.txt
-  - export LOCAL_USER_ID=$UID
-  - makey build-all
-  - makey run bash make travis-assets
-
-script:
-  - # makey test-py-postgres
-  - echo 'success!'
+jobs:
+  include:
+    - stage: Build test env
+       - if [[ -f /var/lib/docker-cache/base.tar ]]; then sudo docker load -i /var/lib/docker-cache/base.tar; fi;
+       - docker images
+       - whoami
+       - git clone https://github.com/phlax/pootle pootle_env
+       - cd pootle_env
+       - git checkout docker-dev
+       - pip install -r requirements/host.txt
+       - export LOCAL_USER_ID=$UID
+       - makey build-all
+       - makey run bash make travis-assets
+    - stage: test
+      - # makey test-py-postgres
+      - echo 'success!'
 
 before_cache:
-  - docker container prune -f
-  - docker image prune -f
   - docker images
-  - sudo mkdir -p /var/lib/docker-cache
-  - sudo docker save $(docker images -q) -o /var/lib/docker-cache/images.tar
-  - sudo chown -R travis:travis /var/lib/docker-cache
-  - sudo chmod 777 -R /var/lib/docker-cache
-  - sudo ls -lh /var/lib/docker-cache
+  - docker save translate/pootle:base -o docker-cache/base.tar
+  - ls -lh docker-cache
