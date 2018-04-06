@@ -16,6 +16,7 @@ jobs:
   include:
     - stage: Build docker environment
       script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - if [[ -f /var/lib/docker-cache/base.tar ]]; then docker load -i /var/lib/docker-cache/base.tar; fi;
       - docker images
       - git clone https://github.com/phlax/pootle pootle_env
@@ -25,6 +26,8 @@ jobs:
       - export LOCAL_USER_ID=$UID
       - makey build-all
       - makey run bash make travis-assets
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker push $DOCKER_USERNAME/pootle:base
     - stage: Run sqlite tests
       script:
       - docker images
