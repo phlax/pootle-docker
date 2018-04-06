@@ -22,7 +22,13 @@ jobs:
       - echo 'logged in to docker'
       - if [[ -f /var/lib/docker-cache/base.tar ]]; then docker load -i /var/lib/docker-cache/base.tar; fi;
       - docker images
-
+      - git clone https://github.com/phlax/pootle pootle_env
+      - cd pootle_env
+      - git checkout docker-dev
+      - pip install -r requirements/host.txt
+      - export LOCAL_USER_ID=$UID
+      - makey build-all
+      - makey run bash make travis-assets
 
 before_cache:
   - docker images
