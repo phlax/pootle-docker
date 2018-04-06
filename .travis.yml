@@ -15,33 +15,8 @@ jobs:
   include:
     - stage: Build docker environment
       script:
-      - docker pull $DOCKER_USERNAME/pootle:base
-      - docker pull $DOCKER_USERNAME/pootle:dev
-      - docker pull $DOCKER_USERNAME/pootle:dev-sqlite
-      - docker pull $DOCKER_USERNAME/pootle:dev-mariadb
-      - docker tag $DOCKER_USERNAME/pootle:base translate/pootle:base
-      - docker tag $DOCKER_USERNAME/pootle:dev translate/pootle:dev
-      - docker tag $DOCKER_USERNAME/pootle:dev-sqlite translate/pootle:dev-sqlite
-      - docker tag $DOCKER_USERNAME/pootle:dev-mariadb translate/pootle:dev-mariadb
-      - docker images
       - git clone https://github.com/phlax/pootle pootle_env
-      - cd pootle_env
-      - git checkout docker-dev
-      - pip install -r requirements/host.txt
-      - export LOCAL_USER_ID=$UID
-      - makey build-all
-      - makey run bash make travis-assets
-      - mkdir -p $HOME/docker-cache
-      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      - docker tag translate/pootle:base $DOCKER_USERNAME/pootle:base
-      - docker tag translate/pootle:dev $DOCKER_USERNAME/pootle:dev
-      - docker tag translate/pootle:dev-sqlite $DOCKER_USERNAME/pootle:dev-sqlite
-      - docker tag translate/pootle:dev-mariadb $DOCKER_USERNAME/pootle:dev-mariadb
-      - docker images
-      - docker push $DOCKER_USERNAME/pootle:base
-      - docker push $DOCKER_USERNAME/pootle:dev
-      - docker push $DOCKER_USERNAME/pootle:dev-sqlite
-      - docker push $DOCKER_USERNAME/pootle:dev-mariadb
+      - cd pootle_env && ./docker/bin/build-travis-images
     - stage: Run sqlite tests
       script:
       - docker pull $DOCKER_USERNAME/pootle:base
