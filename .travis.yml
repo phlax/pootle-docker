@@ -13,7 +13,7 @@ cache:
     - $HOME/virtualenv/python2.7/bin
 
 install:
-  - if [[ -f /var/lib/docker-cache/images.tar ]]; then docker load -i /var/lib/docker-cache/images.tar; fi;
+  - if [[ -f /var/lib/docker-cache/images.tar ]]; then sudo docker load -i /var/lib/docker-cache/images.tar; fi;
   - docker images
   - git clone https://github.com/phlax/pootle pootle_env
   - cd pootle_env
@@ -31,4 +31,4 @@ before_cache:
   - docker image prune -f
   - docker images
   - mkdir -p /var/lib/docker-cache
-  - docker save $(docker images -q) -o /var/lib/docker-cache/images.tar
+  - sudo docker save $(docker images -q) -o /var/lib/docker-cache/images.tar
