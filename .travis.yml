@@ -30,5 +30,5 @@ before_cache:
   - docker container prune -f
   - docker image prune -f
   - docker images
-  - mkdir -p /var/lib/docker-cache
+  - sudo mkdir -p /var/lib/docker-cache
   - sudo docker save $(docker images -q) -o /var/lib/docker-cache/images.tar
