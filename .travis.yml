@@ -16,7 +16,7 @@ jobs:
     - stage: Build docker environment
       script:
       - git clone https://github.com/phlax/pootle pootle_env
-      - cd pootle_env && ./docker/bin/build-travis-images
+      - cd pootle_env && git checkout docker-dev && ./docker/bin/build-travis-images
     - stage: Run sqlite tests
       script:
       - docker pull $DOCKER_USERNAME/pootle:base
