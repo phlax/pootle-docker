@@ -16,9 +16,8 @@ jobs:
   include:
     - stage: Build test env
        script:
-       - if [[ -f /var/lib/docker-cache/base.tar ]]; then sudo docker load -i /var/lib/docker-cache/base.tar; fi;
+       - if [[ -f /var/lib/docker-cache/base.tar ]]; then docker load -i /var/lib/docker-cache/base.tar; fi;
        - docker images
-       - whoami
        - git clone https://github.com/phlax/pootle pootle_env
        - cd pootle_env
        - git checkout docker-dev
