@@ -7,7 +7,7 @@ services:
 
 cache:
   directories:
-    - docker-cache
+    - $HOME/docker-cache
     - $HOME/virtualenv/python2.7.14/bin
     - $HOME/virtualenv/python2.7.14/lib
     - $HOME/virtualenv/python2.7/bin
@@ -31,5 +31,6 @@ jobs:
 
 before_cache:
   - docker images
-  - docker save translate/pootle:base -o docker-cache/base.tar
+  - mkdir -p $HOME/docker-cache
+  - docker save translate/pootle:base -o $HOME/docker-cache/base.tar
   - ls -lh docker-cache
