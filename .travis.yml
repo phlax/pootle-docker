@@ -17,10 +17,6 @@ jobs:
     - stage: Build test env
        script:
        - echo 'installing'
-    - stage: test
-      script:
-      - # makey test-py-postgres
-      - echo 'success!'
 
 before_cache:
   - docker images
