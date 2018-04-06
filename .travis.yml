@@ -14,9 +14,11 @@ cache:
 
 jobs:
   include:
-    - stage: Build test env
-       script:
-       - echo 'installing'
+    - stage: build docker image
+      script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - echo 'logged in to docker'
+
 
 before_cache:
   - docker images
