@@ -16,10 +16,6 @@ jobs:
   include:
     - stage: build docker image
       script:
-      - echo $DOCKER_PASSWORD
-      - echo $DOCKER_USERNAME
-      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      - echo 'logged in to docker'
       - if [[ -f /var/lib/docker-cache/base.tar ]]; then docker load -i /var/lib/docker-cache/base.tar; fi;
       - docker images
       - git clone https://github.com/phlax/pootle pootle_env
