@@ -7,7 +7,6 @@ services:
 
 cache:
   directories:
-    - $HOME/docker-cache
     - $HOME/virtualenv/python2.7.14/bin
     - $HOME/virtualenv/python2.7.14/lib
     - $HOME/virtualenv/python2.7/bin
@@ -16,7 +15,7 @@ jobs:
   include:
     - stage: Build docker environment
       script:
-      - if [[ -f $HOME/docker-cache/base.tar ]]; then docker load -i $HOME/docker-cache/base.tar; fi;
+      - docker pull $DOCKER_USERNAME/pootle:dev
       - docker images
       - git clone https://github.com/phlax/pootle pootle_env
       - cd pootle_env
@@ -27,8 +26,10 @@ jobs:
       - makey run bash make travis-assets
       - docker images
       - mkdir -p $HOME/docker-cache
-      - docker save translate/pootle:base -o $HOME/docker-cache/base.tar
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker tag translate/pootle:dev $DOCKER_USERNAME/pootle:dev
+      - docker push $DOCKER_USERNAME/pootle:dev
     - stage: Run sqlite tests
       script:
-      - docker load -i $HOME/docker-cache/base.tar; fi;
+      - docker pull $DOCKER_USERNAME/pootle:dev
       - docker images
