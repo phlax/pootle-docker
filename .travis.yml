@@ -16,6 +16,7 @@ jobs:
     - stage: Build docker environment
       script:
       - docker pull $DOCKER_USERNAME/pootle:dev
+      - docker tag $DOCKER_USERNAME/pootle:base translate/pootle:base
       - docker images
       - git clone https://github.com/phlax/pootle pootle_env
       - cd pootle_env
@@ -27,9 +28,9 @@ jobs:
       - docker images
       - mkdir -p $HOME/docker-cache
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      - docker tag translate/pootle:dev $DOCKER_USERNAME/pootle:dev
-      - docker push $DOCKER_USERNAME/pootle:dev
+      - docker tag translate/pootle:base $DOCKER_USERNAME/pootle:base
+      - docker push $DOCKER_USERNAME/pootle:base
     - stage: Run sqlite tests
       script:
-      - docker pull $DOCKER_USERNAME/pootle:dev
+      - docker pull $DOCKER_USERNAME/pootle:base
       - docker images
