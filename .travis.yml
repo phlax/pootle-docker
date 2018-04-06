@@ -15,7 +15,7 @@ jobs:
   include:
     - stage: Build docker environment
       script:
-      - docker pull $DOCKER_USERNAME/pootle:dev
+      - docker pull $DOCKER_USERNAME/pootle:base
       - docker tag $DOCKER_USERNAME/pootle:base translate/pootle:base
       - docker images
       - git clone https://github.com/phlax/pootle pootle_env
