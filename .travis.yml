@@ -19,5 +19,5 @@ jobs:
       - cd pootle_env && git checkout docker-dev && ./docker/bin/build-travis-images
     - stage: Run sqlite tests
       script:
-      - docker pull $DOCKER_USERNAME/pootle:base
-      - docker images
+      - ls
+      - cd pootle_env && ./docker/bin/run-travis-sqlite
