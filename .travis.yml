@@ -14,7 +14,7 @@ cache:
 
 jobs:
   include:
-    - stage: build docker image
+    - stage: Build docker environment
       script:
       - if [[ -f /var/lib/docker-cache/base.tar ]]; then docker load -i /var/lib/docker-cache/base.tar; fi;
       - docker images
@@ -25,7 +25,7 @@ jobs:
       - export LOCAL_USER_ID=$UID
       - makey build-all
       - makey run bash make travis-assets
-    - stage: build docker image
+    - stage: Run sqlite tests
       script:
       - docker images
 
@@ -33,4 +33,4 @@ before_cache:
   - docker images
   - mkdir -p $HOME/docker-cache
   - docker save translate/pootle:base -o $HOME/docker-cache/base.tar
-  - ls -lh docker-cache
+  - ls -lh $HOME/docker-cache
