@@ -21,6 +21,11 @@ jobs:
       script:
       - git clone https://github.com/phlax/pootle pootle_env
       - cd pootle_env && git checkout docker-dev && ./docker/bin/run-travis-sqlite
+      - makey run bash make travis-assets
+      - makey test-py-postgres
+    -
       script:
       - git clone https://github.com/phlax/pootle pootle_env
       - cd pootle_env && git checkout docker-dev && ./docker/bin/run-travis-sqlite
+      - makey run bash make travis-assets
+      - makey test-py-mariadb
